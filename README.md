@@ -18,9 +18,7 @@ Entrega: Portada de Acceso Unificada con Landing Pages Autogeneradas
 
 ## Link al Deploy Unificado
 
-```
-[Pendiente — agregar URL de Vercel]
-```
+[Enlace al deploy](https://frontend-pfo2.vercel.app)
 
 ---
 
