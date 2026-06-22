@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Expedición y Capacitación Todoterreno 4x4 - Próxima Jornada</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tabler Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+
+  <!-- Tailwind Custom Theme Configuration -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            camel: '#D4B996',
+            aventuraVerde: '#606C38',
+            tierraMarron: '#283618',
+            alertaNaranja: '#E65F2B',
+          },
+          fontFamily: {
+            heading: ['Archivo Black', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            adventure: ['Permanent Marker', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom Styles for Animations & Interactions -->
+  <style>
+    /* Pulse Animation for CTA Button */
+    @keyframes pulse-orange {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(230, 95, 43, 0.6);
+      }
+      50% {
+        transform: scale(1.03);
+        box-shadow: 0 0 0 15px rgba(230, 95, 43, 0);
+      }
+    }
+    
+    .pulse-btn {
+      animation: pulse-orange 2.5s infinite ease-in-out;
+    }
+
+    /* Subdued float animation */
+    @keyframes float-slow {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-6px);
+      }
+    }
+    .float-item {
+      animation: float-slow 4s infinite ease-in-out;
+    }
+
+    /* Custom scrollbar matching palette */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #283618;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4B996;
+      border-radius: 5px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #E65F2B;
+    }
+  </style>
+</head>
+<body class="font-body bg-[#FAF7F2] text-tierraMarron antialiased overflow-x-hidden">
+
+  <!-- ==================== 1. CABECERA (HEADER) ==================== -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-[#283618]/95 backdrop-blur-md border-b-2 border-camel/30 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <!-- Logo Container -->
+      <a href="#" class="flex items-center space-x-3 group">
+        <!-- SVG Logo: Compass combined with 4x4 Track -->
+        <svg class="w-10 h-10 text-camel group-hover:text-alertaNaranja transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M16.2 7.8L12 12l-4.2 4.2" />
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+          <path d="M7 7l1.5 1.5M15.5 15.5L17 17M17 7l-1.5 1.5M8.5 15.5L7 17" />
+        </svg>
+        <span class="font-heading text-xl md:text-2xl text-white tracking-wider">
+          RUTA<span class="text-camel">4X4</span>
+        </span>
+      </a>
+
+      <!-- Desktop Navigation Menu -->
+      <nav class="hidden lg:flex items-center space-x-8">
+        <a href="#inicio" class="text-white hover:text-camel font-medium text-lg transition-colors duration-200">Inicio</a>
+        <a href="#nosotros" class="text-white hover:text-camel font-medium text-lg transition-colors duration-200">Nosotros</a>
+        <a href="#cronograma" class="text-white hover:text-camel font-medium text-lg transition-colors duration-200">Cronograma</a>
+        <a href="#testimonios" class="text-white hover:text-camel font-medium text-lg transition-colors duration-200">Testimonios</a>
+        <a href="#registro" class="text-white hover:text-camel font-medium text-lg transition-colors duration-200">Registro</a>
+      </nav>
+
+      <!-- CTA Nav Button (Desktop) -->
+      <div class="hidden lg:block">
+        <a href="#registro" class="bg-alertaNaranja hover:bg-alertaNaranja/90 text-white font-heading px-6 py-3 rounded-lg text-lg tracking-wide uppercase transition-all duration-300 transform hover:scale-105 inline-flex items-center space-x-2">
+          <span>Inscribirse</span>
+          <i class="ti ti-arrow-right text-xl"></i>
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button id="menu-toggle" class="lg:hidden text-white hover:text-camel focus:outline-none" aria-label="Abrir menú">
+        <i id="menu-icon" class="ti ti-menu-2 text-3xl"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Overlay -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-[#283618] border-b-2 border-camel/30 transition-all duration-300">
+      <nav class="flex flex-col space-y-4 px-6 py-6 pb-8">
+        <a href="#inicio" class="mobile-link text-white hover:text-camel font-medium text-xl transition-colors duration-200">Inicio</a>
+        <a href="#nosotros" class="mobile-link text-white hover:text-camel font-medium text-xl transition-colors duration-200">Nosotros</a>
+        <a href="#cronograma" class="mobile-link text-white hover:text-camel font-medium text-xl transition-colors duration-200">Cronograma</a>
+        <a href="#testimonios" class="mobile-link text-white hover:text-camel font-medium text-xl transition-colors duration-200">Testimonios</a>
+        <a href="#registro" class="mobile-link text-white hover:text-camel font-medium text-xl transition-colors duration-200">Registro</a>
+        <hr class="border-camel/20 my-2">
+        <a href="#registro" class="mobile-link bg-alertaNaranja text-center text-white font-heading py-4 rounded-lg text-xl tracking-wide uppercase hover:bg-alertaNaranja/90 transition-all">
+          Asegurar Vacante
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== 2. HERO SECTION ==================== -->
+  <section id="inicio" class="relative min-h-screen flex items-center pt-24 pb-20 bg-black overflow-hidden">
+    <!-- Hero Background Image (using ../imgs/hero.jpg) -->
+    <div class="absolute inset-0 bg-cover bg-center select-none pointer-events-none" style="background-image: url('../imgs/hero.jpg');"></div>
+    
+    <!-- Linear Gradient Overlay: heavy dark shadow on the left to highlight typography, clear on the right where the vehicle is located -->
+    <div class="absolute inset-0 bg-gradient-to-r from-black via-black/80 md:via-black/70 to-transparent"></div>
+
+    <!-- Content Container -->
+    <div class="relative max-w-7xl mx-auto px-6 w-full z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <div class="lg:col-span-8 text-left space-y-8">
+        
+        <!-- Date Badge -->
+        <div class="inline-block bg-camel border-2 border-camel/40 text-tierraMarron font-heading px-6 py-2.5 rounded-md text-lg md:text-xl tracking-wider uppercase shadow-lg float-item">
+          Próxima Jornada: 10 de Noviembre, 2026
+        </div>
+
+        <!-- Main Title -->
+        <h1 class="font-heading text-5xl md:text-7xl lg:text-8xl text-white leading-none uppercase tracking-tight">
+          Domina cualquier <span class="text-camel">terreno</span> y vive la 
+          <span class="font-adventure text-alertaNaranja text-6xl md:text-8xl lg:text-9xl rotate-[-2deg] inline-block ml-2 select-none transform origin-center">Aventura</span>
+        </h1>
+
+        <!-- Subheading Description -->
+        <p class="text-white/95 text-xl md:text-2xl max-w-2xl font-body font-medium leading-relaxed">
+          Únete a la expedición y capacitación de manejo todoterreno más exigente de la región. Aprende técnicas avanzadas de rescate, navegación y conducción de pilotos expertos.
+        </p>
+
+        <!-- Double Call to Action -->
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-5 pt-4">
+          <!-- Primary CTA (Pulse Animated Button) -->
+          <a href="#registro" class="pulse-btn bg-alertaNaranja hover:bg-alertaNaranja/95 text-white font-heading text-xl px-8 py-5 rounded-lg tracking-wide uppercase transition-all duration-300 text-center flex items-center justify-center space-x-3 shadow-2xl">
+            <i class="ti ti-compass text-2xl"></i>
+            <span>Asegurar mi lugar en la Jornada</span>
+          </a>
+          
+          <!-- Secondary CTA (Ghost Button linking to schedule) -->
+          <a href="#cronograma" class="border-2 border-camel hover:bg-camel hover:text-tierraMarron text-camel font-heading text-xl px-8 py-5 rounded-lg tracking-wide uppercase transition-all duration-300 text-center flex items-center justify-center space-x-2">
+            <span>Ver cronograma de 5 días</span>
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Decorative Topography Contour SVG Lines floating in the background -->
+    <div class="absolute bottom-0 right-0 w-96 h-96 opacity-20 pointer-events-none select-none">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#D4B996" stroke-width="0.5" class="w-full h-full">
+        <path d="M 0 80 Q 20 70, 40 85 T 80 75 T 100 90" />
+        <path d="M 0 70 Q 20 60, 40 75 T 80 65 T 100 80" />
+        <path d="M 0 60 Q 20 50, 40 65 T 80 55 T 100 70" />
+        <path d="M 0 50 Q 20 40, 40 55 T 80 45 T 100 60" />
+      </svg>
+    </div>
+  </section>
+
+  <!-- ==================== 3. DESCRIPCIÓN / SOBRE NOSOTROS ==================== -->
+  <section id="nosotros" class="relative py-28 bg-[#FAF7F2] overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+        
+        <!-- Text/Editorial Column (Left) -->
+        <div class="lg:col-span-6 space-y-8">
+          <div class="flex items-center space-x-4">
+            <span class="h-1 w-12 bg-alertaNaranja"></span>
+            <span class="font-heading text-lg md:text-xl text-aventuraVerde uppercase tracking-widest">Nuestra Filosofía</span>
+          </div>
+          
+          <h2 class="font-heading text-4xl md:text-5xl text-tierraMarron leading-tight uppercase">
+            CONEXIÓN PURA CON LA NATURALEZA Y EL PODER DE LA MÁQUINA
+          </h2>
+
+          <p class="text-tierraMarron/90 text-xl font-body leading-relaxed">
+            No somos simplemente un curso de conducción. Somos una comunidad de apasionados del motor y de la vida al aire libre que entiende que el verdadero todoterreno reside en el respeto por el medio ambiente y la autosuficiencia técnica.
+          </p>
+
+          <p class="text-tierraMarron/90 text-xl font-body leading-relaxed">
+            Nuestros instructores acumulan décadas de travesías por los parajes más duros y aislados de Sudamérica. En Ruta 4x4 te preparamos para resolver situaciones extremas de forma segura, minimizando el impacto en la flora y fauna locales y logrando una sintonía perfecta con tu vehículo.
+          </p>
+
+          <!-- Core Values Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+            <div class="flex items-start space-x-4">
+              <div class="bg-aventuraVerde/10 p-3 rounded-lg text-aventuraVerde">
+                <i class="ti ti-leaf text-3xl"></i>
+              </div>
+              <div>
+                <h4 class="font-heading text-lg text-tierraMarron uppercase">Impacto Mínimo</h4>
+                <p class="text-tierraMarron/80 text-base">Técnicas de conducción consciente para proteger la naturaleza.</p>
+              </div>
+            </div>
+            <div class="flex items-start space-x-4">
+              <div class="bg-aventuraVerde/10 p-3 rounded-lg text-aventuraVerde">
+                <i class="ti ti-shield-check text-3xl"></i>
+              </div>
+              <div>
+                <h4 class="font-heading text-lg text-tierraMarron uppercase">Seguridad Primero</h4>
+                <p class="text-tierraMarron/80 text-base">Protocolos mundiales de rescate y protección integral.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Image Column (Right) -->
+        <div class="lg:col-span-6 relative">
+          <!-- Main Frame styling with organic offsets -->
+          <div class="absolute -inset-4 bg-camel rounded-2xl transform rotate-2 z-0 border-2 border-tierraMarron/20"></div>
+          <div class="relative z-10 bg-white p-4 rounded-2xl shadow-2xl border border-tierraMarron/10">
+            <img src="../imgs/nosotros.jpg" alt="Expedición Ruta 4x4 en terreno montañoso" class="w-full h-auto object-cover rounded-xl select-none" />
+            <div class="mt-4 flex justify-between items-center px-2">
+              <span class="font-heading text-lg text-aventuraVerde tracking-wider uppercase">Jornada 2026</span>
+              <span class="font-adventure text-2xl text-alertaNaranja rotate-[-1deg]">Paso de Montaña</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 4. SECCIÓN DE SERVICIOS / CARACTERÍSTICAS (Cronograma & Wow) ==================== -->
+  <section id="cronograma" class="relative py-28 bg-tierraMarron text-white overflow-hidden">
+    <!-- Section Background Texture: desaturated mountain landscape -->
+    <div class="absolute inset-0 bg-cover bg-center opacity-10 pointer-events-none select-none mix-blend-luminosity" style="background-image: url('../imgs/textura.jpg');"></div>
+    <div class="absolute inset-0 bg-[#283618]/90"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6 z-10">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto space-y-6 mb-20">
+        <div class="inline-block bg-aventuraVerde text-camel font-heading px-4 py-1.5 rounded text-lg uppercase tracking-widest">
+          Experiencia Inmersiva de 5 Días
+        </div>
+        <h2 class="font-heading text-4xl md:text-6xl uppercase leading-tight">
+          El Camino Hacia el Control Absoluto
+        </h2>
+        <p class="text-white/80 text-xl font-body max-w-2xl mx-auto">
+          Un plan de entrenamiento estructurado militarmente para construir destreza, adaptabilidad y liderazgo técnico a lo largo de cinco jornadas intensivas.
+        </p>
+      </div>
+
+      <!-- ==================== COUNTDOWN TIMER ==================== -->
+      <div class="max-w-4xl mx-auto mb-24">
+        <h3 class="font-heading text-center text-xl md:text-2xl text-camel uppercase tracking-wider mb-8">
+          Comienza en
+        </h3>
+        <!-- Countdown Grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <!-- Days Card -->
+          <div class="bg-[#1c2611] border-2 border-camel/20 rounded-2xl p-6 text-center shadow-xl relative overflow-hidden">
+            <span id="countdown-days" class="block font-heading text-5xl md:text-6xl lg:text-7xl text-camel">00</span>
+            <span class="block text-white/70 font-heading text-base md:text-lg uppercase mt-2 tracking-widest">Días</span>
+            <div class="absolute top-0 left-0 w-full h-1 bg-alertaNaranja"></div>
+          </div>
+          <!-- Hours Card -->
+          <div class="bg-[#1c2611] border-2 border-camel/20 rounded-2xl p-6 text-center shadow-xl relative overflow-hidden">
+            <span id="countdown-hours" class="block font-heading text-5xl md:text-6xl lg:text-7xl text-camel">00</span>
+            <span class="block text-white/70 font-heading text-base md:text-lg uppercase mt-2 tracking-widest">Horas</span>
+            <div class="absolute top-0 left-0 w-full h-1 bg-alertaNaranja"></div>
+          </div>
+          <!-- Minutes Card -->
+          <div class="bg-[#1c2611] border-2 border-camel/20 rounded-2xl p-6 text-center shadow-xl relative overflow-hidden">
+            <span id="countdown-minutes" class="block font-heading text-5xl md:text-6xl lg:text-7xl text-camel">00</span>
+            <span class="block text-white/70 font-heading text-base md:text-lg uppercase mt-2 tracking-widest">Minutos</span>
+            <div class="absolute top-0 left-0 w-full h-1 bg-alertaNaranja"></div>
+          </div>
+          <!-- Seconds Card -->
+          <div class="bg-[#1c2611] border-2 border-camel/20 rounded-2xl p-6 text-center shadow-xl relative overflow-hidden">
+            <span id="countdown-seconds" class="block font-heading text-5xl md:text-6xl lg:text-7xl text-camel">00</span>
+            <span class="block text-white/70 font-heading text-base md:text-lg uppercase mt-2 tracking-widest">Segundos</span>
+            <div class="absolute top-0 left-0 w-full h-1 bg-alertaNaranja"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== WOW ELEMENT: TRAIL MAP PATH ==================== -->
+      <div class="space-y-16">
+        <h3 class="font-heading text-center text-2xl md:text-3xl text-white uppercase tracking-wider">
+          Explora la Ruta de Aprendizaje Interactiva
+        </h3>
+
+        <!-- HORIZONTAL TRAIL MAP (Desktop & Large Screens) -->
+        <div class="hidden lg:block relative py-12">
+          <!-- The Trail Path Line (SVG) -->
+          <svg class="absolute top-1/2 left-0 w-full -translate-y-1/2 h-24 z-0" viewBox="0 0 1000 100" fill="none" preserveAspectRatio="none">
+            <!-- Background Path Line -->
+            <path d="M 50 50 Q 250 10, 500 50 T 950 50" stroke="#606C38" stroke-width="6" stroke-linecap="round" />
+            <!-- Active Fill Path Line -->
+            <path id="active-trail-line" d="M 50 50 Q 250 10, 500 50 T 950 50" stroke="#E65F2B" stroke-width="6" stroke-linecap="round" stroke-dasharray="1000" stroke-dashoffset="1000" class="transition-all duration-700 ease-out" />
+          </svg>
+
+          <!-- Hitos / Milestones on the trail map -->
+          <div class="relative z-10 flex justify-between px-12">
+            <!-- Milestone Day 1 -->
+            <button onclick="activateDay(1)" onmouseenter="activateDay(1)" class="group focus:outline-none flex flex-col items-center select-none" style="width: 120px;">
+              <div id="milestone-dot-1" class="w-16 h-16 rounded-full bg-aventuraVerde border-4 border-tierraMarron flex items-center justify-center font-heading text-xl text-white transition-all duration-300 group-hover:scale-110 active-milestone shadow-lg animate-pulse">
+                1
+              </div>
+              <span class="mt-4 font-heading text-base text-camel uppercase tracking-wide text-center">Día 1</span>
+            </button>
+
+            <!-- Milestone Day 2 -->
+            <button onclick="activateDay(2)" onmouseenter="activateDay(2)" class="group focus:outline-none flex flex-col items-center select-none" style="width: 120px;">
+              <div id="milestone-dot-2" class="w-16 h-16 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-xl text-white/50 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                2
+              </div>
+              <span class="mt-4 font-heading text-base text-white/50 uppercase tracking-wide text-center">Día 2</span>
+            </button>
+
+            <!-- Milestone Day 3 -->
+            <button onclick="activateDay(3)" onmouseenter="activateDay(3)" class="group focus:outline-none flex flex-col items-center select-none" style="width: 120px;">
+              <div id="milestone-dot-3" class="w-16 h-16 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-xl text-white/50 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                3
+              </div>
+              <span class="mt-4 font-heading text-base text-white/50 uppercase tracking-wide text-center">Día 3</span>
+            </button>
+
+            <!-- Milestone Day 4 -->
+            <button onclick="activateDay(4)" onmouseenter="activateDay(4)" class="group focus:outline-none flex flex-col items-center select-none" style="width: 120px;">
+              <div id="milestone-dot-4" class="w-16 h-16 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-xl text-white/50 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                4
+              </div>
+              <span class="mt-4 font-heading text-base text-white/50 uppercase tracking-wide text-center">Día 4</span>
+            </button>
+
+            <!-- Milestone Day 5 -->
+            <button onclick="activateDay(5)" onmouseenter="activateDay(5)" class="group focus:outline-none flex flex-col items-center select-none" style="width: 120px;">
+              <div id="milestone-dot-5" class="w-16 h-16 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-xl text-white/50 transition-all duration-300 group-hover:scale-110 shadow-lg">
+                5
+              </div>
+              <span class="mt-4 font-heading text-base text-white/50 uppercase tracking-wide text-center">Día 5</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- VERTICAL TRAIL MAP (Mobile & Tablets) -->
+        <div class="lg:hidden relative flex items-stretch py-4">
+          <!-- SVG Line on Left -->
+          <div class="w-16 flex justify-center relative">
+            <div class="w-1 bg-aventuraVerde absolute top-0 bottom-0 left-1/2 -translate-x-1/2 z-0"></div>
+            <!-- Active Fill Line (Overlay via height transition) -->
+            <div id="active-trail-vertical" class="w-1 bg-alertaNaranja absolute top-0 left-1/2 -translate-x-1/2 z-0 transition-all duration-700 ease-out" style="height: 0%;"></div>
+
+            <!-- Dots overlay -->
+            <div class="relative z-10 flex flex-col justify-between items-center h-full space-y-12">
+              <button onclick="activateDay(1)" class="w-12 h-12 rounded-full bg-aventuraVerde border-4 border-tierraMarron flex items-center justify-center font-heading text-base text-white shadow-lg active-milestone" id="mobile-dot-1">1</button>
+              <button onclick="activateDay(2)" class="w-12 h-12 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-base text-white/50 shadow-lg" id="mobile-dot-2">2</button>
+              <button onclick="activateDay(3)" class="w-12 h-12 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-base text-white/50 shadow-lg" id="mobile-dot-3">3</button>
+              <button onclick="activateDay(4)" class="w-12 h-12 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-base text-white/50 shadow-lg" id="mobile-dot-4">4</button>
+              <button onclick="activateDay(5)" class="w-12 h-12 rounded-full bg-[#1c2611] border-4 border-tierraMarron flex items-center justify-center font-heading text-base text-white/50 shadow-lg" id="mobile-dot-5">5</button>
+            </div>
+          </div>
+
+          <!-- Quick Text Selector list -->
+          <div class="flex-1 flex flex-col justify-between py-1 space-y-12 pl-6">
+            <button onclick="activateDay(1)" class="text-left font-heading text-lg text-camel block focus:outline-none uppercase tracking-wide transition-all" id="mobile-lbl-1">Día 1: Navegación</button>
+            <button onclick="activateDay(2)" class="text-left font-heading text-lg text-white/50 block focus:outline-none uppercase tracking-wide transition-all" id="mobile-lbl-2">Día 2: Rescate</button>
+            <button onclick="activateDay(3)" class="text-left font-heading text-lg text-white/50 block focus:outline-none uppercase tracking-wide transition-all" id="mobile-lbl-3">Día 3: Mecánica</button>
+            <button onclick="activateDay(4)" class="text-left font-heading text-lg text-white/50 block focus:outline-none uppercase tracking-wide transition-all" id="mobile-lbl-4">Día 4: Vadeo</button>
+            <button onclick="activateDay(5)" class="text-left font-heading text-lg text-white/50 block focus:outline-none uppercase tracking-wide transition-all" id="mobile-lbl-5">Día 5: Expedición</button>
+          </div>
+        </div>
+
+        <!-- DAY DETAILS CONTAINER -->
+        <div class="max-w-4xl mx-auto">
+          <!-- Day Cards Grid (Only active is displayed via JavaScript) -->
+          <div class="relative bg-[#1c2611] border-2 border-camel/30 rounded-3xl p-8 md:p-12 shadow-2xl overflow-hidden min-h-[350px] flex flex-col justify-between transition-all duration-300">
+            <!-- Background Image overlay for the day card -->
+            <div class="absolute inset-0 bg-cover bg-center opacity-10 mix-blend-overlay pointer-events-none select-none" style="background-image: url('../imgs/capacitacion.jpg');"></div>
+
+            <div id="day-content" class="relative z-10 space-y-6">
+              <!-- Dynamically populated content -->
+              <div class="flex items-center space-x-4">
+                <span class="bg-alertaNaranja text-white font-heading px-4 py-2 rounded-lg text-lg uppercase tracking-widest" id="display-day-tag">
+                  Día 1
+                </span>
+                <span class="font-heading text-xl md:text-2xl text-camel uppercase tracking-wider" id="display-day-subtitle">
+                  Modulo Inicial
+                </span>
+              </div>
+
+              <h4 class="font-heading text-3xl md:text-5xl text-white uppercase tracking-tight" id="display-day-title">
+                Navegación Satelital y Cartografía
+              </h4>
+
+              <p class="text-white/90 text-xl font-body leading-relaxed max-w-3xl" id="display-day-desc">
+                Aprende el uso avanzado de GPS, lectura de mapas topográficos y orientación sin señal celular en entornos hostiles. Establece el rumbo de la expedición.
+              </p>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-white/10 text-lg">
+                <div class="flex items-center space-x-3 text-camel">
+                  <i class="ti ti-clock text-2xl"></i>
+                  <span><strong>Duración:</strong> 8:00 AM - 6:00 PM</span>
+                </div>
+                <div class="flex items-center space-x-3 text-camel">
+                  <i class="ti ti-tool text-2xl"></i>
+                  <span><strong>Equipo:</strong> GPS de mano, mapas físicos</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Absolute decorative Compass SVG inside card -->
+            <div class="absolute bottom-6 right-6 w-32 h-32 opacity-15 hidden md:block">
+              <svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2" class="w-full h-full text-white">
+                <circle cx="50" cy="50" r="40" />
+                <polygon points="50,20 57,43 50,50 43,43" fill="currentColor"/>
+                <polygon points="50,80 57,57 50,50 43,57" fill="currentColor"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 5. TESTIMONIOS O RESEÑAS ==================== -->
+  <section id="testimonios" class="relative py-28 bg-[#FAF7F2] overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6">
+      
+      <!-- Section Title -->
+      <div class="text-center max-w-3xl mx-auto space-y-6 mb-20">
+        <div class="flex items-center justify-center space-x-4">
+          <span class="h-1 w-8 bg-alertaNaranja"></span>
+          <span class="font-heading text-lg md:text-xl text-aventuraVerde uppercase tracking-widest">Opiniones Reales</span>
+          <span class="h-1 w-8 bg-alertaNaranja"></span>
+        </div>
+        <h2 class="font-heading text-4xl md:text-5xl text-tierraMarron uppercase leading-tight">
+          La Voz de los Conquistadores del Terreno
+        </h2>
+        <p class="text-tierraMarron/80 text-xl font-body max-w-2xl mx-auto">
+          Descubre la experiencia de quienes ya desafiaron sus límites y transformaron su forma de conducir.
+        </p>
+      </div>
+
+      <!-- Testimonial Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        
+        <!-- Card 1 -->
+        <div class="bg-white border-2 border-tierraMarron/10 p-8 rounded-2xl shadow-lg flex flex-col justify-between space-y-6 relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+          <div class="space-y-4">
+            <!-- Stars -->
+            <div class="flex space-x-1 text-alertaNaranja">
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+            </div>
+            <p class="text-tierraMarron/90 text-lg md:text-xl font-body leading-relaxed italic">
+              "Esta jornada cambió por completo mi perspectiva del off-road. El taller de rescate y winchado en barro extremo me dio la confianza que necesitaba para salir solo a la montaña."
+            </p>
+          </div>
+          <div class="flex items-center space-x-4 pt-4 border-t border-tierraMarron/10">
+            <!-- Avatar Initials -->
+            <div class="w-14 h-14 rounded-full bg-aventuraVerde text-camel flex items-center justify-center font-heading text-xl shadow">
+              MS
+            </div>
+            <div>
+              <h4 class="font-heading text-lg text-tierraMarron uppercase">Martín Silva</h4>
+              <span class="text-aventuraVerde font-body text-base font-semibold">Toyota Hilux GR</span>
+            </div>
+          </div>
+          <i class="ti ti-quote absolute top-6 right-6 text-5xl text-camel/20 pointer-events-none"></i>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white border-2 border-tierraMarron/10 p-8 rounded-2xl shadow-lg flex flex-col justify-between space-y-6 relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+          <div class="space-y-4">
+            <!-- Stars -->
+            <div class="flex space-x-1 text-alertaNaranja">
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+            </div>
+            <p class="text-tierraMarron/90 text-lg md:text-xl font-body leading-relaxed italic">
+              "El nivel técnico de los instructores es increíble. La sesión de mecánica de emergencia me salvó en mi última salida cuando rompí una homocinética en medio de la nada."
+            </p>
+          </div>
+          <div class="flex items-center space-x-4 pt-4 border-t border-tierraMarron/10">
+            <!-- Avatar Initials -->
+            <div class="w-14 h-14 rounded-full bg-[#1c2611] text-camel flex items-center justify-center font-heading text-xl shadow">
+              VP
+            </div>
+            <div>
+              <h4 class="font-heading text-lg text-tierraMarron uppercase">Valeria Ponce</h4>
+              <span class="text-aventuraVerde font-body text-base font-semibold">Jeep Wrangler TJ</span>
+            </div>
+          </div>
+          <i class="ti ti-quote absolute top-6 right-6 text-5xl text-camel/20 pointer-events-none"></i>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white border-2 border-tierraMarron/10 p-8 rounded-2xl shadow-lg flex flex-col justify-between space-y-6 relative transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
+          <div class="space-y-4">
+            <!-- Stars -->
+            <div class="flex space-x-1 text-alertaNaranja">
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+              <i class="ti ti-star-filled text-2xl"></i>
+            </div>
+            <p class="text-tierraMarron/90 text-lg md:text-xl font-body leading-relaxed italic">
+              "Una experiencia inolvidable. No solo aprendes a superar obstáculos que parecen imposibles, sino que lo haces en un ambiente de camaradería inigualable y absoluto respeto ambiental."
+            </p>
+          </div>
+          <div class="flex items-center space-x-4 pt-4 border-t border-tierraMarron/10">
+            <!-- Avatar Initials -->
+            <div class="w-14 h-14 rounded-full bg-camel text-tierraMarron flex items-center justify-center font-heading text-xl shadow">
+              RD
+            </div>
+            <div>
+              <h4 class="font-heading text-lg text-tierraMarron uppercase">Ricardo Díaz</h4>
+              <span class="text-aventuraVerde font-body text-base font-semibold">Ford Ranger Raptor</span>
+            </div>
+          </div>
+          <i class="ti ti-quote absolute top-6 right-6 text-5xl text-camel/20 pointer-events-none"></i>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== 6. FORMULARIO DE CONTACTO (Maquetado Visual Only) ==================== -->
+  <section id="registro" class="relative py-28 bg-aventuraVerde text-white overflow-hidden">
+    <!-- Overlay Vector SVG for topography background texture -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none select-none">
+      <svg viewBox="0 0 100 100" fill="none" stroke="#FAF7F2" stroke-width="0.3" class="w-full h-full">
+        <path d="M 0 20 C 30 10, 70 30, 100 10 M 0 40 C 30 30, 70 50, 100 30 M 0 60 C 30 50, 70 70, 100 50 M 0 80 C 30 70, 70 90, 100 70" />
+      </svg>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto px-6 z-10">
+      
+      <!-- Box Header -->
+      <div class="text-center space-y-6 mb-16">
+        <h2 class="font-heading text-4xl md:text-6xl text-white uppercase leading-tight">
+          Asegura Tu Entrada a la Aventura
+        </h2>
+        <p class="text-white/80 text-xl font-body max-w-2xl mx-auto">
+          Completa tus datos de registro. Los cupos son estrictamente limitados para garantizar una instrucción personalizada y segura.
+        </p>
+      </div>
+
+      <!-- Registration Form Container -->
+      <div class="bg-[#283618] border-2 border-camel/30 rounded-3xl p-8 md:p-12 shadow-2xl">
+        <form onsubmit="event.preventDefault(); alert('¡Inscripción recibida de forma exitosa! Nos pondremos en contacto a la brevedad.');" class="space-y-8">
+          
+          <!-- Grid Inputs -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <!-- Full Name -->
+            <div class="flex flex-col space-y-2">
+              <label for="fullname" class="font-heading text-lg text-camel uppercase tracking-wider">Nombre Completo</label>
+              <input type="text" id="fullname" required placeholder="Ej: Juan Pérez" class="bg-[#FAF7F2] text-tierraMarron placeholder-tierraMarron/50 rounded-xl p-4 text-lg font-body focus:outline-none focus:ring-4 focus:ring-alertaNaranja transition-all duration-200">
+            </div>
+
+            <!-- Email -->
+            <div class="flex flex-col space-y-2">
+              <label for="email" class="font-heading text-lg text-camel uppercase tracking-wider">Correo Electrónico</label>
+              <input type="email" id="email" required placeholder="Ej: juan@email.com" class="bg-[#FAF7F2] text-tierraMarron placeholder-tierraMarron/50 rounded-xl p-4 text-lg font-body focus:outline-none focus:ring-4 focus:ring-alertaNaranja transition-all duration-200">
+            </div>
+
+            <!-- Vehicle Model -->
+            <div class="flex flex-col space-y-2">
+              <label for="vehicle" class="font-heading text-lg text-camel uppercase tracking-wider">Modelo del Vehículo</label>
+              <input type="text" id="vehicle" required placeholder="Ej: Ford Ranger Raptor 2024" class="bg-[#FAF7F2] text-tierraMarron placeholder-tierraMarron/50 rounded-xl p-4 text-lg font-body focus:outline-none focus:ring-4 focus:ring-alertaNaranja transition-all duration-200">
+            </div>
+
+            <!-- Experience Level -->
+            <div class="flex flex-col space-y-2">
+              <label for="experience" class="font-heading text-lg text-camel uppercase tracking-wider">Nivel de Experiencia Todoterreno</label>
+              <select id="experience" class="bg-[#FAF7F2] text-tierraMarron rounded-xl p-4 text-lg font-body focus:outline-none focus:ring-4 focus:ring-alertaNaranja transition-all duration-200 appearance-none cursor-pointer">
+                <option value="principiante">Principiante (Nunca salí de la ruta asfaltada)</option>
+                <option value="intermedio" selected>Intermedio (Tengo experiencia en caminos rurales)</option>
+                <option value="avanzado">Avanzado (Dominio de terrenos y equipamiento)</option>
+              </select>
+            </div>
+
+          </div>
+
+          <!-- Terms Checkbox -->
+          <div class="flex items-start space-x-3 pt-2">
+            <input type="checkbox" id="terms" required class="w-6 h-6 text-alertaNaranja bg-[#FAF7F2] border-2 border-camel/30 rounded focus:ring-alertaNaranja cursor-pointer mt-1">
+            <label for="terms" class="text-white/90 text-lg font-body leading-tight cursor-pointer">
+              Acepto los términos de seguridad y la liberación de responsabilidades requerida para actividades todoterreno extremas.
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4">
+            <button type="submit" class="w-full bg-alertaNaranja hover:bg-alertaNaranja/95 text-white font-heading text-xl md:text-2xl py-5 rounded-xl tracking-wide uppercase transition-all duration-300 shadow-xl flex items-center justify-center space-x-3 hover:scale-[1.02]">
+              <i class="ti ti-circle-check text-3xl"></i>
+              <span>Confirmar Mi Registro Completo</span>
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ==================== 7. PIE DE PÁGINA (FOOTER) ==================== -->
+  <footer class="bg-tierraMarron text-white border-t-2 border-camel/20 py-16">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-12">
+      
+      <!-- Brand column -->
+      <div class="space-y-6">
+        <a href="#" class="flex items-center space-x-3">
+          <svg class="w-10 h-10 text-camel" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M16.2 7.8L12 12l-4.2 4.2" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2" />
+          </svg>
+          <span class="font-heading text-2xl text-white tracking-wider">
+            RUTA<span class="text-camel">4X4</span>
+          </span>
+        </a>
+        <p class="text-white/70 text-lg font-body leading-relaxed">
+          Formando pilotos y copilotos para las expediciones más desafiantes y remotas del planeta de forma responsable y técnica.
+        </p>
+      </div>
+
+      <!-- Navigation links (mirror) -->
+      <div class="space-y-4">
+        <h4 class="font-heading text-lg text-camel uppercase tracking-wider">Navegación</h4>
+        <ul class="space-y-2 text-lg">
+          <li><a href="#inicio" class="text-white/80 hover:text-alertaNaranja transition-colors duration-200">Inicio</a></li>
+          <li><a href="#nosotros" class="text-white/80 hover:text-alertaNaranja transition-colors duration-200">Nosotros</a></li>
+          <li><a href="#cronograma" class="text-white/80 hover:text-alertaNaranja transition-colors duration-200">Cronograma de 5 días</a></li>
+          <li><a href="#testimonios" class="text-white/80 hover:text-alertaNaranja transition-colors duration-200">Testimonios</a></li>
+          <li><a href="#registro" class="text-white/80 hover:text-alertaNaranja transition-colors duration-200">Registro</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="space-y-4">
+        <h4 class="font-heading text-lg text-camel uppercase tracking-wider">Contacto</h4>
+        <ul class="space-y-3 text-lg text-white/80">
+          <li class="flex items-center space-x-3">
+            <i class="ti ti-map-pin text-xl text-camel"></i>
+            <span>San Martín de los Andes, Neuquén, Argentina</span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i class="ti ti-phone text-xl text-camel"></i>
+            <span>+54 297 123-4567</span>
+          </li>
+          <li class="flex items-center space-x-3">
+            <i class="ti ti-mail text-xl text-camel"></i>
+            <span>info@ruta4x4extrema.com</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Social and legal -->
+      <div class="space-y-6">
+        <h4 class="font-heading text-lg text-camel uppercase tracking-wider">Síguenos en ruta</h4>
+        <div class="flex space-x-4">
+          <a href="#" class="w-12 h-12 rounded-lg bg-aventuraVerde hover:bg-alertaNaranja text-white flex items-center justify-center text-2xl transition-all duration-200" aria-label="Facebook">
+            <i class="ti ti-brand-facebook"></i>
+          </a>
+          <a href="#" class="w-12 h-12 rounded-lg bg-aventuraVerde hover:bg-alertaNaranja text-white flex items-center justify-center text-2xl transition-all duration-200" aria-label="Instagram">
+            <i class="ti ti-brand-instagram"></i>
+          </a>
+          <a href="#" class="w-12 h-12 rounded-lg bg-aventuraVerde hover:bg-alertaNaranja text-white flex items-center justify-center text-2xl transition-all duration-200" aria-label="YouTube">
+            <i class="ti ti-brand-youtube"></i>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Copyright block -->
+    <div class="max-w-7xl mx-auto px-6 mt-16 pt-8 border-t border-camel/20 flex flex-col md:flex-row justify-between items-center gap-4 text-base text-white/60">
+      <p>© 2026 Ruta 4x4. Todos los derechos reservados. Capacitación extrema y expediciones seguras.</p>
+      <div class="flex space-x-6">
+        <a href="#" class="hover:underline hover:text-camel">Políticas de Privacidad</a>
+        <a href="#" class="hover:underline hover:text-camel">Términos del Servicio</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT: LOGIC & INTERACTIONS ==================== -->
+  <script>
+    // ----------------------------------------------------
+    // MOBILE MENU TOGGLE
+    // ----------------------------------------------------
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+      const isHidden = mobileMenu.classList.contains('hidden');
+      menuIcon.className = isHidden ? 'ti ti-menu-2 text-3xl' : 'ti ti-x text-3xl';
+    });
+
+    // Close mobile menu when a link is clicked
+    const mobileLinks = document.querySelectorAll('.mobile-link');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+        menuIcon.className = 'ti ti-menu-2 text-3xl';
+      });
+    });
+
+    // ----------------------------------------------------
+    // COUNTDOWN TIMER LOGIC
+    // Target date: November 10, 2026, 08:00 AM
+    // ----------------------------------------------------
+    const targetDate = new Date('November 10, 2026 08:00:00').getTime();
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const difference = targetDate - now;
+
+      // Time calculations for days, hours, minutes and seconds
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      // Display the result
+      document.getElementById('countdown-days').innerText = String(days).padStart(2, '0');
+      document.getElementById('countdown-hours').innerText = String(hours).padStart(2, '0');
+      document.getElementById('countdown-minutes').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('countdown-seconds').innerText = String(seconds).padStart(2, '0');
+
+      // If the countdown is finished, write some text
+      if (difference < 0) {
+        clearInterval(countdownInterval);
+        document.getElementById('countdown-days').innerText = '00';
+        document.getElementById('countdown-hours').innerText = '00';
+        document.getElementById('countdown-minutes').innerText = '00';
+        document.getElementById('countdown-seconds').innerText = '00';
+      }
+    }
+
+    // Run countdown initially and set interval
+    updateCountdown();
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // ----------------------------------------------------
+    // WOW ELEMENT: INTERACTIVE TRAIL MAP
+    // ----------------------------------------------------
+    // Days data
+    const daysData = {
+      1: {
+        tag: 'Día 1',
+        subtitle: 'Orientación y Planificación',
+        title: 'Navegación Satelital y Cartografía',
+        desc: 'Aprende el uso avanzado de GPS, lectura de mapas topográficos y orientación sin señal celular en entornos hostiles. Establece el rumbo de la expedición.',
+        duration: '8:00 AM - 6:00 PM',
+        tools: 'GPS de mano, mapas físicos topográficos'
+      },
+      2: {
+        tag: 'Día 2',
+        subtitle: 'Rescate de Auto y Terceros',
+        title: 'Técnicas de Rescate y Winchado',
+        desc: 'Dominio absoluto del winche (malacate), poleas de reenvío, uso correcto de planchas de desatasco, grilletes y anclajes en piedra, árboles y tierra profunda.',
+        duration: '8:00 AM - 7:30 PM',
+        tools: 'Malacates eléctricos, poleas, eslingas, grilletes'
+      },
+      3: {
+        tag: 'Día 3',
+        subtitle: 'Supervivencia Vehicular',
+        title: 'Mecánica de Emergencia en Ruta',
+        desc: 'Solución práctica de averías mecánicas críticas en pleno campo: desbande de neumáticos, soldadura con baterías en serie, puentes eléctricos y diagnósticos de motor rápidos.',
+        duration: '9:00 AM - 6:30 PM',
+        tools: 'Herramientas de campo, infladores rápidos, soldadores portátiles'
+      },
+      4: {
+        tag: 'Día 4',
+        subtitle: 'Cruces de Ríos y Corrientes',
+        title: 'Vadeo Extremo y Obstáculos',
+        desc: 'Aprende las técnicas seguras para cruzar ríos y corrientes de agua profunda. Preparación de snorkels, protección de componentes electrónicos y lectura hidráulica de cauces.',
+        duration: '8:00 AM - 6:00 PM',
+        tools: 'Líneas de vadeo, eslingas de seguridad'
+      },
+      5: {
+        tag: 'Día 5',
+        subtitle: 'Prueba de Habilidades Real',
+        title: 'Expedición Final y Supervivencia',
+        desc: 'Una travesía real sin asistencia de instructores. Pon a prueba la cartografía, las técnicas de rescate y la conducción en una ruta de alta dificultad técnica y de clasificación secreta.',
+        duration: '6:00 AM - 10:00 PM',
+        tools: 'Vehículo 4x4 completo, ración de supervivencia, kit de rescate'
+      }
+    };
+
+    // DOM Elements for content swap
+    const displayTag = document.getElementById('display-day-tag');
+    const displaySubtitle = document.getElementById('display-day-subtitle');
+    const displayTitle = document.getElementById('display-day-title');
+    const displayDesc = document.getElementById('display-day-desc');
+    const displayDuration = document.querySelector('#day-content strong + span'); // Will query within HTML
+    
+    // We target the dynamic list elements
+    const dayContentContainer = document.getElementById('day-content');
+
+    function activateDay(dayNumber) {
+      // 1. Update active states for Horizontal SVG milestones (Desktop)
+      for (let i = 1; i <= 5; i++) {
+        const dot = document.getElementById(`milestone-dot-${i}`);
+        if (dot) {
+          if (i === dayNumber) {
+            dot.classList.add('bg-alertaNaranja', 'active-milestone', 'animate-pulse');
+            dot.classList.remove('bg-[#1c2611]', 'text-white/50');
+            dot.classList.add('text-white');
+            // Update horizontal label text opacity
+            dot.nextElementSibling.classList.add('text-camel');
+            dot.nextElementSibling.classList.remove('text-white/50');
+          } else {
+            dot.classList.remove('bg-alertaNaranja', 'active-milestone', 'animate-pulse');
+            dot.classList.add('bg-[#1c2611]');
+            dot.classList.remove('text-white');
+            dot.classList.add('text-white/50');
+            // Update horizontal label text opacity
+            dot.nextElementSibling.classList.remove('text-camel');
+            dot.nextElementSibling.classList.add('text-white/50');
+          }
+        }
+      }
+
+      // Update active state for Horizontal Trail line progress width (dashoffset)
+      // Dashoffset decreases from 1000 (0% full) to 0 (100% full)
+      const horizontalLine = document.getElementById('active-trail-line');
+      if (horizontalLine) {
+        const percentages = { 1: 1000, 2: 750, 3: 500, 4: 250, 5: 0 };
+        horizontalLine.style.strokeDashoffset = percentages[dayNumber];
+      }
+
+      // 2. Update active states for Vertical Mobile menu
+      for (let i = 1; i <= 5; i++) {
+        const mDot = document.getElementById(`mobile-dot-${i}`);
+        const mLbl = document.getElementById(`mobile-lbl-${i}`);
+        if (mDot && mLbl) {
+          if (i === dayNumber) {
+            mDot.classList.add('bg-alertaNaranja', 'active-milestone');
+            mDot.classList.remove('bg-[#1c2611]', 'text-white/50');
+            mDot.classList.add('text-white');
+            
+            mLbl.classList.add('text-camel');
+            mLbl.classList.remove('text-white/50');
+          } else {
+            mDot.classList.remove('bg-alertaNaranja', 'active-milestone');
+            mDot.classList.add('bg-[#1c2611]');
+            mDot.classList.remove('text-white');
+            mDot.classList.add('text-white/50');
+            
+            mLbl.classList.remove('text-camel');
+            mLbl.classList.add('text-white/50');
+          }
+        }
+      }
+
+      // Update vertical progress line height (mobile)
+      const verticalLine = document.getElementById('active-trail-vertical');
+      if (verticalLine) {
+        const heights = { 1: 0, 2: 25, 3: 50, 4: 75, 5: 100 };
+        verticalLine.style.height = `${heights[dayNumber]}%`;
+      }
+
+      // 3. Swap text in Content Card with a quick fade animation
+      dayContentContainer.style.opacity = '0';
+      dayContentContainer.style.transform = 'translateY(10px)';
+      
+      setTimeout(() => {
+        const data = daysData[dayNumber];
+        dayContentContainer.innerHTML = `
+          <div class="flex items-center space-x-4">
+            <span class="bg-alertaNaranja text-white font-heading px-4 py-2 rounded-lg text-lg uppercase tracking-widest">
+              ${data.tag}
+            </span>
+            <span class="font-heading text-xl md:text-2xl text-camel uppercase tracking-wider">
+              ${data.subtitle}
+            </span>
+          </div>
+
+          <h4 class="font-heading text-3xl md:text-5xl text-white uppercase tracking-tight">
+            ${data.title}
+          </h4>
+
+          <p class="text-white/90 text-xl font-body leading-relaxed max-w-3xl">
+            ${data.desc}
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6 border-t border-white/10 text-lg">
+            <div class="flex items-center space-x-3 text-camel">
+              <i class="ti ti-clock text-2xl"></i>
+              <span><strong>Duración:</strong> ${data.duration}</span>
+            </div>
+            <div class="flex items-center space-x-3 text-camel">
+              <i class="ti ti-tool text-2xl"></i>
+              <span><strong>Equipo:</strong> ${data.tools}</span>
+            </div>
+          </div>
+        `;
+        dayContentContainer.style.opacity = '1';
+        dayContentContainer.style.transform = 'translateY(0)';
+      }, 200);
+    }
+  </script>
+</body>
+</html>

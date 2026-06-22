@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aventura Off-Road | Expediciones Extremas 4x4</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Permanent+Marker&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            camel: '#D4B996',
+            aventuraVerde: '#606C38',
+            tierraMarron: '#283618',
+            alertaNaranja: '#E65F2B',
+          },
+          fontFamily: {
+            heading: ['Archivo Black', 'sans-serif'],
+            body: ['Plus Jakarta Sans', 'sans-serif'],
+            adventure: ['Permanent Marker', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    html { scroll-behavior: smooth; }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(230,95,43,0.6); transform: scale(1); }
+      50% { box-shadow: 0 0 20px 8px rgba(230,95,43,0.3); transform: scale(1.03); }
+    }
+    .btn-pulse { animation: pulseGlow 2s ease-in-out infinite; }
+    @keyframes tiltAdventure {
+      0%, 100% { transform: rotate(-2deg) scale(1); }
+      50% { transform: rotate(1deg) scale(1.05); }
+    }
+    .tilt-animate { animation: tiltAdventure 3s ease-in-out infinite; }
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .count-animate { animation: countUp 0.4s ease-out; }
+    .fade-up { opacity: 0; transform: translateY(40px); transition: all 0.7s ease-out; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    @keyframes floatPin {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+    .float-pin { animation: floatPin 2.5s ease-in-out infinite; }
+    @keyframes dashDraw { to { stroke-dashoffset: 0; } }
+    .trail-path { stroke-dasharray: 1200; stroke-dashoffset: 1200; }
+    .trail-path.animate { animation: dashDraw 3s ease-in-out forwards; }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-slow { animation: spinSlow 20s linear infinite; }
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .slide-down { animation: slideDown 0.3s ease-out; }
+  </style>
+</head>
+<body class="bg-camel/20 text-tierraMarron overflow-x-hidden">
+
+  <!-- 1. HEADER -->
+  <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 bg-tierraMarron/95 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <a href="#" class="flex items-center gap-3 group">
+          <svg width="48" height="48" viewBox="0 0 64 64" fill="none" class="transition-transform duration-300 group-hover:scale-110">
+            <circle cx="32" cy="32" r="30" stroke="#D4B996" stroke-width="2" fill="none"/>
+            <path d="M20 44 L32 18 L44 44" stroke="#E65F2B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M24 38 L32 24 L40 38" stroke="#D4B996" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <circle cx="32" cy="18" r="3" fill="#E65F2B"/>
+            <line x1="26" y1="44" x2="38" y2="44" stroke="#D4B996" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <div>
+            <span class="font-heading text-camel text-xl tracking-wide block leading-tight">AVENTURA</span>
+            <span class="font-adventure text-alertaNaranja text-base tracking-widest">OFF-ROAD 4x4</span>
+          </div>
+        </a>
+        <nav class="hidden md:flex items-center gap-8">
+          <a href="#hero" class="text-camel text-lg font-body font-semibold hover:text-alertaNaranja transition-colors duration-200">Inicio</a>
+          <a href="#nosotros" class="text-camel text-lg font-body font-semibold hover:text-alertaNaranja transition-colors duration-200">Nosotros</a>
+          <a href="#expedicion" class="text-camel text-lg font-body font-semibold hover:text-alertaNaranja transition-colors duration-200">Expedicion</a>
+          <a href="#testimonios" class="text-camel text-lg font-body font-semibold hover:text-alertaNaranja transition-colors duration-200">Testimonios</a>
+          <a href="#contacto" class="bg-alertaNaranja text-white text-lg font-bold px-6 py-3 rounded-xl hover:bg-tierraMarron transition-colors duration-200">Inscribirme</a>
+        </nav>
+        <button id="menuBtn" class="md:hidden text-camel focus:outline-none" onclick="toggleMenu()">
+          <i class="ti ti-menu-2 text-3xl"></i>
+        </button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-tierraMarron/98 border-t border-camel/20">
+      <div class="px-6 py-6 space-y-4 slide-down">
+        <a href="#hero" class="block text-camel text-xl font-body font-semibold py-2 hover:text-alertaNaranja transition-colors" onclick="toggleMenu()">Inicio</a>
+        <a href="#nosotros" class="block text-camel text-xl font-body font-semibold py-2 hover:text-alertaNaranja transition-colors" onclick="toggleMenu()">Nosotros</a>
+        <a href="#expedicion" class="block text-camel text-xl font-body font-semibold py-2 hover:text-alertaNaranja transition-colors" onclick="toggleMenu()">Expedicion</a>
+        <a href="#testimonios" class="block text-camel text-xl font-body font-semibold py-2 hover:text-alertaNaranja transition-colors" onclick="toggleMenu()">Testimonios</a>
+        <a href="#contacto" class="block bg-alertaNaranja text-white text-xl font-bold px-6 py-3 rounded-xl text-center hover:bg-tierraMarron transition-colors" onclick="toggleMenu()">Inscribirme</a>
+      </div>
+    </div>
+  </header>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('mobileMenu');
+      const btn = document.getElementById('menuBtn');
+      menu.classList.toggle('hidden');
+      if (!menu.classList.contains('hidden')) {
+        btn.innerHTML = '<i class="ti ti-x text-3xl"></i>';
+      } else {
+        btn.innerHTML = '<i class="ti ti-menu-2 text-3xl"></i>';
+      }
+    }
+  </script>
+
+  <!-- 2. HERO SECTION -->
+  <section id="hero" class="relative min-h-screen flex items-center pt-20">
+    <div class="absolute inset-0">
+      <img src="../imgs/hero.jpg" alt="Vehiculo off-road en montana" class="w-full h-full object-cover object-center">
+      <div class="absolute inset-0 bg-gradient-to-r from-tierraMarron/95 via-tierraMarron/70 to-transparent"></div>
+    </div>
+    <div class="absolute top-32 right-16 opacity-10 hidden lg:block">
+      <svg width="200" height="200" viewBox="0 0 200 200" class="spin-slow">
+        <circle cx="100" cy="100" r="90" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <circle cx="100" cy="100" r="70" stroke="#D4B996" stroke-width="0.5" fill="none"/>
+        <line x1="100" y1="10" x2="100" y2="40" stroke="#D4B996" stroke-width="2"/>
+        <line x1="100" y1="160" x2="100" y2="190" stroke="#D4B996" stroke-width="2"/>
+        <line x1="10" y1="100" x2="40" y2="100" stroke="#D4B996" stroke-width="2"/>
+        <line x1="160" y1="100" x2="190" y2="100" stroke="#D4B996" stroke-width="2"/>
+        <polygon points="100,15 95,35 105,35" fill="#E65F2B"/>
+      </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+      <div class="max-w-2xl">
+        <div class="inline-flex items-center gap-3 bg-camel text-tierraMarron px-6 py-3 rounded-full mb-8">
+          <i class="ti ti-calendar-event text-xl"></i>
+          <span class="font-body font-bold text-lg tracking-wide">PROXIMA JORNADA: 10 DE NOVIEMBRE, 2026</span>
+        </div>
+        <h1 class="font-heading text-white text-5xl sm:text-6xl lg:text-7xl leading-tight mb-6">
+          DOMINA EL<br>
+          <span class="tilt-animate inline-block font-adventure text-alertaNaranja text-6xl sm:text-7xl lg:text-8xl rotate-[-2deg]">TERRENO</span><br>
+          <span class="text-camel">EXTREMO</span>
+        </h1>
+        <p class="font-body text-white/80 text-xl sm:text-2xl leading-relaxed mb-10 max-w-xl">
+          Cinco dias de entrenamiento intensivo en navegacion, rescate, mecanica y vadeo extremo. Conviertete en un conductor de aventura de nivel profesional.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="#contacto" class="btn-pulse inline-flex items-center justify-center gap-3 bg-alertaNaranja text-white font-body font-bold text-xl px-8 py-4 rounded-2xl hover:bg-tierraMarron transition-colors duration-300">
+            <i class="ti ti-shield-check text-2xl"></i>
+            Asegurar mi lugar en la Jornada
+          </a>
+          <a href="#expedicion" class="inline-flex items-center justify-center gap-3 border-2 border-camel text-camel font-body font-bold text-xl px-8 py-4 rounded-2xl hover:bg-camel hover:text-tierraMarron transition-all duration-300">
+            <i class="ti ti-map-2 text-2xl"></i>
+            Ver cronograma de 5 dias
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+      <div class="flex flex-col items-center gap-2 text-camel/60">
+        <span class="font-body text-lg">Descubre mas</span>
+        <i class="ti ti-chevron-down text-2xl animate-bounce"></i>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. SOBRE NOSOTROS -->
+  <section id="nosotros" class="relative py-24 bg-tierraMarron overflow-hidden">
+    <div class="absolute inset-0 opacity-5">
+      <img src="../imgs/textura.jpg" alt="" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute top-0 right-0 opacity-5 hidden lg:block">
+      <svg width="400" height="400" viewBox="0 0 400 400">
+        <path d="M0,200 Q100,150 200,200 Q300,250 400,200" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <path d="M0,220 Q100,170 200,220 Q300,270 400,220" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <path d="M0,240 Q100,190 200,240 Q300,290 400,240" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <path d="M0,260 Q100,210 200,260 Q300,310 400,260" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <path d="M0,280 Q100,230 200,280 Q300,330 400,280" stroke="#D4B996" stroke-width="1" fill="none"/>
+      </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="fade-up">
+          <div class="relative rounded-3xl overflow-hidden shadow-2xl">
+            <img src="../imgs/nosotros.jpg" alt="Equipo Aventura Off-Road" class="w-full h-96 lg:h-[500px] object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-tierraMarron/60 to-transparent"></div>
+            <div class="absolute bottom-6 left-6 right-6">
+              <div class="inline-flex items-center gap-2 bg-alertaNaranja/90 text-white px-4 py-2 rounded-xl">
+                <i class="ti ti-users text-xl"></i>
+                <span class="font-body font-bold text-lg">+500 Expediciones Exitosas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up">
+          <div class="inline-flex items-center gap-2 bg-camel/20 text-camel px-4 py-2 rounded-full mb-6">
+            <i class="ti ti-compass text-xl text-alertaNaranja"></i>
+            <span class="font-body font-bold text-lg">Sobre Nosotros</span>
+          </div>
+          <h2 class="font-heading text-white text-4xl sm:text-5xl leading-tight mb-6">
+            PASION POR EL
+            <span class="font-adventure text-alertaNaranja inline-block tilt-animate">TERRENO SALVAJE</span>
+          </h2>
+          <p class="font-body text-white/80 text-xl leading-relaxed mb-6">
+            Somos un equipo de instructores certificados con mas de 15 anos de experiencia en expediciones off-road. Nuestra mision es formar conductores capacitados para enfrentar cualquier desafio natural con seguridad y confianza.
+          </p>
+          <p class="font-body text-white/80 text-xl leading-relaxed mb-8">
+            Creemos en el respeto absoluto por la naturaleza. Cada travesia que organizamos sigue protocolos estrictos de preservacion ambiental, dejando solo huellas de rodadas en el camino.
+          </p>
+          <div class="grid grid-cols-3 gap-6">
+            <div class="text-center">
+              <div class="font-heading text-alertaNaranja text-4xl mb-2">15+</div>
+              <div class="font-body text-white/70 text-lg">Anos de experiencia</div>
+            </div>
+            <div class="text-center">
+              <div class="font-heading text-alertaNaranja text-4xl mb-2">2000+</div>
+              <div class="font-body text-white/70 text-lg">Participantes formados</div>
+            </div>
+            <div class="text-center">
+              <div class="font-heading text-alertaNaranja text-4xl mb-2">98%</div>
+              <div class="font-body text-white/70 text-lg">Satisfaccion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. EXPEDICION 5 DIAS -->
+  <section id="expedicion" class="relative py-24 bg-camel/30 overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <img src="../imgs/textura.jpg" alt="" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute bottom-0 left-0 w-full opacity-10">
+      <svg width="100%" height="200" viewBox="0 0 1440 200" preserveAspectRatio="none">
+        <path d="M0,200 L0,120 L200,60 L350,140 L500,40 L650,110 L800,20 L950,100 L1100,30 L1250,90 L1440,50 L1440,200 Z" fill="#283618"/>
+      </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 bg-tierraMarron text-camel px-4 py-2 rounded-full mb-6">
+          <i class="ti ti-route text-xl text-alertaNaranja"></i>
+          <span class="font-body font-bold text-lg">La Expedicion</span>
+        </div>
+        <h2 class="font-heading text-tierraMarron text-4xl sm:text-5xl lg:text-6xl leading-tight mb-4">
+          5 DIAS QUE
+          <span class="font-adventure text-alertaNaranja inline-block tilt-animate">TRANSFORMAN</span>
+          TU CONDUCCION
+        </h2>
+        <p class="font-body text-tierraMarron/80 text-xl max-w-3xl mx-auto">
+          Un entrenamiento intensivo progresivo. Cada dia superas un nuevo nivel de dominio off-road.
+        </p>
+      </div>
+      <div class="fade-up">
+        <div class="relative bg-white/60 backdrop-blur-sm rounded-3xl p-8 lg:p-12 shadow-xl">
+          <div class="mb-8 rounded-2xl overflow-hidden">
+            <img src="../imgs/capacitacion.jpg" alt="Capacitacion off-road" class="w-full h-64 object-cover">
+          </div>
+          <div class="relative">
+            <svg id="trailSvg" viewBox="0 0 1000 600" class="w-full h-auto" style="min-height: 400px;">
+              <defs>
+                <pattern id="topoPattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+                  <path d="M0,30 Q15,20 30,30 Q45,40 60,30" stroke="#283618" stroke-width="0.5" fill="none" opacity="0.15"/>
+                </pattern>
+                <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#E65F2B;stop-opacity:1" />
+                  <stop offset="100%" style="stop-color:#D4B996;stop-opacity:1" />
+                </linearGradient>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+              <rect width="1000" height="600" fill="url(#topoPattern)"/>
+              <path d="M0,500 L100,380 L200,420 L300,300 L400,350 L500,250 L600,320 L700,200 L800,280 L900,180 L1000,250 L1000,600 L0,600 Z" fill="#283618" opacity="0.08"/>
+              <path id="trailPath" class="trail-path" d="M80,500 C150,480 180,400 250,380 S320,350 380,320 S450,280 500,300 S580,340 650,280 S720,220 780,250 S850,280 920,200" stroke="url(#trailGrad)" stroke-width="4" fill="none" stroke-linecap="round" filter="url(#glow)"/>
+              <g class="cursor-pointer" onclick="selectDay(1)">
+                <circle cx="80" cy="500" r="28" fill="#283618" stroke="#E65F2B" stroke-width="3"/>
+                <circle cx="80" cy="500" r="20" fill="#E65F2B"/>
+                <text x="80" y="506" text-anchor="middle" fill="white" font-size="16" font-family="Archivo Black">1</text>
+                <rect x="120" y="470" width="200" height="65" rx="12" fill="#283618"/>
+                <text x="220" y="493" text-anchor="middle" fill="#D4B996" font-size="14" font-family="Archivo Black">DIA 1</text>
+                <text x="220" y="515" text-anchor="middle" fill="white" font-size="13" font-family="Plus Jakarta Sans">Navegacion Satelital</text>
+              </g>
+              <g class="cursor-pointer" onclick="selectDay(2)">
+                <circle cx="380" cy="320" r="28" fill="#283618" stroke="#E65F2B" stroke-width="3"/>
+                <circle cx="380" cy="320" r="20" fill="#E65F2B"/>
+                <text x="380" y="326" text-anchor="middle" fill="white" font-size="16" font-family="Archivo Black">2</text>
+                <rect x="420" y="290" width="210" height="65" rx="12" fill="#283618"/>
+                <text x="525" y="313" text-anchor="middle" fill="#D4B996" font-size="14" font-family="Archivo Black">DIA 2</text>
+                <text x="525" y="335" text-anchor="middle" fill="white" font-size="13" font-family="Plus Jakarta Sans">Rescate y Winchado</text>
+              </g>
+              <g class="cursor-pointer" onclick="selectDay(3)">
+                <circle cx="500" cy="300" r="28" fill="#283618" stroke="#E65F2B" stroke-width="3"/>
+                <circle cx="500" cy="300" r="20" fill="#E65F2B"/>
+                <text x="500" y="306" text-anchor="middle" fill="white" font-size="16" font-family="Archivo Black">3</text>
+                <rect x="400" y="360" width="220" height="65" rx="12" fill="#283618"/>
+                <text x="510" y="383" text-anchor="middle" fill="#D4B996" font-size="14" font-family="Archivo Black">DIA 3</text>
+                <text x="510" y="405" text-anchor="middle" fill="white" font-size="13" font-family="Plus Jakarta Sans">Mecanica de Emergencia</text>
+              </g>
+              <g class="cursor-pointer" onclick="selectDay(4)">
+                <circle cx="650" cy="280" r="28" fill="#283618" stroke="#E65F2B" stroke-width="3"/>
+                <circle cx="650" cy="280" r="20" fill="#E65F2B"/>
+                <text x="650" y="286" text-anchor="middle" fill="white" font-size="16" font-family="Archivo Black">4</text>
+                <rect x="690" y="250" width="200" height="65" rx="12" fill="#283618"/>
+                <text x="790" y="273" text-anchor="middle" fill="#D4B996" font-size="14" font-family="Archivo Black">DIA 4</text>
+                <text x="790" y="295" text-anchor="middle" fill="white" font-size="13" font-family="Plus Jakarta Sans">Vadeo Extremo</text>
+              </g>
+              <g class="cursor-pointer" onclick="selectDay(5)">
+                <circle cx="920" cy="200" r="28" fill="#283618" stroke="#E65F2B" stroke-width="3"/>
+                <circle cx="920" cy="200" r="20" fill="#E65F2B"/>
+                <text x="920" y="206" text-anchor="middle" fill="white" font-size="16" font-family="Archivo Black">5</text>
+                <rect x="810" y="140" width="180" height="65" rx="12" fill="#E65F2B"/>
+                <text x="900" y="163" text-anchor="middle" fill="white" font-size="14" font-family="Archivo Black">DIA 5</text>
+                <text x="900" y="185" text-anchor="middle" fill="white" font-size="13" font-family="Plus Jakarta Sans">Expedicion Final</text>
+              </g>
+              <g class="float-pin">
+                <path d="M920,195 L920,175 C920,160 935,150 935,165 C935,180 920,195 920,195 Z" fill="#E65F2B" opacity="0.4"/>
+              </g>
+            </svg>
+          </div>
+          <div id="dayDetail" class="mt-8 bg-tierraMarron rounded-2xl p-6 lg:p-8 text-white hidden">
+            <div class="flex items-start gap-4">
+              <div id="dayIcon" class="bg-alertaNaranja rounded-xl p-4 shrink-0">
+                <i class="ti ti-route text-3xl"></i>
+              </div>
+              <div>
+                <h4 id="dayTitle" class="font-heading text-2xl mb-2"></h4>
+                <p id="dayDesc" class="font-body text-white/80 text-lg leading-relaxed"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mt-16 fade-up">
+        <h3 class="font-heading text-tierraMarron text-3xl text-center mb-8">CUENTA REGRESIVA PARA LA PROXIMA JORNADA</h3>
+        <div class="flex justify-center gap-4 sm:gap-6 lg:gap-8 flex-wrap">
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center min-w-[120px]">
+            <div id="days" class="font-heading text-tierraMarron text-5xl lg:text-6xl count-animate">00</div>
+            <div class="font-body text-tierraMarron/70 text-lg mt-2 font-semibold">DIAS</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center min-w-[120px]">
+            <div id="hours" class="font-heading text-tierraMarron text-5xl lg:text-6xl count-animate">00</div>
+            <div class="font-body text-tierraMarron/70 text-lg mt-2 font-semibold">HORAS</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center min-w-[120px]">
+            <div id="minutes" class="font-heading text-tierraMarron text-5xl lg:text-6xl count-animate">00</div>
+            <div class="font-body text-tierraMarron/70 text-lg mt-2 font-semibold">MINUTOS</div>
+          </div>
+          <div class="bg-white rounded-2xl p-6 shadow-lg text-center min-w-[120px]">
+            <div id="seconds" class="font-heading text-alertaNaranja text-5xl lg:text-6xl count-animate">00</div>
+            <div class="font-body text-tierraMarron/70 text-lg mt-2 font-semibold">SEGUNDOS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. TESTIMONIOS -->
+  <section id="testimonios" class="relative py-24 bg-tierraMarron overflow-hidden">
+    <div class="absolute top-10 left-10 opacity-5 hidden lg:block">
+      <svg width="150" height="150" viewBox="0 0 150 150">
+        <circle cx="75" cy="75" r="70" stroke="#D4B996" stroke-width="1" fill="none"/>
+        <path d="M40,75 L55,45 L70,75 L55,60 Z" fill="#D4B996"/>
+      </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16 fade-up">
+        <div class="inline-flex items-center gap-2 bg-camel/20 text-camel px-4 py-2 rounded-full mb-6">
+          <i class="ti ti-star text-xl text-alertaNaranja"></i>
+          <span class="font-body font-bold text-lg">Testimonios</span>
+        </div>
+        <h2 class="font-heading text-white text-4xl sm:text-5xl lg:text-6xl leading-tight mb-4">
+          LO QUE DICEN
+          <span class="font-adventure text-alertaNaranja inline-block tilt-animate">NUESTROS EXPLORADORES</span>
+        </h2>
+      </div>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="fade-up bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/15 transition-all duration-300 border border-camel/20">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+          </div>
+          <p class="font-body text-white/90 text-xl leading-relaxed mb-6">
+            "Los cinco dias cambiaron mi forma de manejar en terreno dificil. Los instructores son excepcionales y la logistica impecable. Recomiendo esta experiencia al 100%."
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-alertaNaranja/30 flex items-center justify-center">
+              <span class="font-heading text-alertaNaranja text-xl">MR</span>
+            </div>
+            <div>
+              <div class="font-body font-bold text-white text-lg">Martin Rodriguez</div>
+              <div class="font-body text-camel text-lg">Conductor Toyota Hilux</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/15 transition-all duration-300 border border-camel/20">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+          </div>
+          <p class="font-body text-white/90 text-xl leading-relaxed mb-6">
+            "Nunca pense que podia vadear un rio con confianza hasta el dia 4. La capacitacion en rescate y winchado es invaluable. Ahora mi grupo me tiene como guia oficial."
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-alertaNaranja/30 flex items-center justify-center">
+              <span class="font-heading text-alertaNaranja text-xl">CG</span>
+            </div>
+            <div>
+              <div class="font-body font-bold text-white text-lg">Carla Gutierrez</div>
+              <div class="font-body text-camel text-lg">Conductora Jeep Wrangler</div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up bg-white/10 backdrop-blur-sm rounded-2xl p-8 hover:bg-white/15 transition-all duration-300 border border-camel/20">
+          <div class="flex items-center gap-1 mb-4">
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+            <i class="ti ti-star-filled text-alertaNaranja text-2xl"></i>
+          </div>
+          <p class="font-body text-white/90 text-xl leading-relaxed mb-6">
+            "La expedicion final del dia 5 fue la mejor prueba de todo lo aprendido. Salgo con habilidades reales y una comunidad de aventureros increible. Volvere el proximo ano."
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full bg-alertaNaranja/30 flex items-center justify-center">
+              <span class="font-heading text-alertaNaranja text-xl">FS</span>
+            </div>
+            <div>
+              <div class="font-body font-bold text-white text-lg">Fernando Salazar</div>
+              <div class="font-body text-camel text-lg">Conductor Ford Ranger</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. FORMULARIO DE CONTACTO -->
+  <section id="contacto" class="relative py-24 bg-camel/40 overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <img src="../imgs/textura.jpg" alt="" class="w-full h-full object-cover">
+    </div>
+    <div class="absolute top-12 right-12 opacity-10 hidden lg:block">
+      <svg width="100" height="130" viewBox="0 0 100 130">
+        <path d="M50,0 C22,0 0,22 0,50 C0,85 50,130 50,130 C50,130 100,85 100,50 C100,22 78,0 50,0 Z" fill="#E65F2B"/>
+        <circle cx="50" cy="48" r="20" fill="white"/>
+      </svg>
+    </div>
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-16 items-start">
+        <div class="fade-up">
+          <div class="inline-flex items-center gap-2 bg-tierraMarron text-camel px-4 py-2 rounded-full mb-6">
+            <i class="ti ti-mail text-xl text-alertaNaranja"></i>
+            <span class="font-body font-bold text-lg">Contacto</span>
+          </div>
+          <h2 class="font-heading text-tierraMarron text-4xl sm:text-5xl leading-tight mb-6">
+            RESERVA TU
+            <span class="font-adventure text-alertaNaranja inline-block tilt-animate">LUGAR</span>
+            EN LA AVENTURA
+          </h2>
+          <p class="font-body text-tierraMarron/80 text-xl leading-relaxed mb-8">
+            Completa el formulario y nos pondremos en contacto contigo para confirmar tu inscripcion. Los cupos son limitados para garantizar la calidad del entrenamiento.
+          </p>
+          <div class="space-y-6">
+            <div class="flex items-center gap-4">
+              <div class="bg-alertaNaranja/10 rounded-xl p-3">
+                <i class="ti ti-phone text-alertaNaranja text-2xl"></i>
+              </div>
+              <div>
+                <div class="font-body font-bold text-tierraMarron text-lg">Telefono</div>
+                <div class="font-body text-tierraMarron/70 text-lg">+54 11 5555-0123</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="bg-alertaNaranja/10 rounded-xl p-3">
+                <i class="ti ti-mail text-alertaNaranja text-2xl"></i>
+              </div>
+              <div>
+                <div class="font-body font-bold text-tierraMarron text-lg">Email</div>
+                <div class="font-body text-tierraMarron/70 text-lg">info@aventuraoffroad.com</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-4">
+              <div class="bg-alertaNaranja/10 rounded-xl p-3">
+                <i class="ti ti-map-pin text-alertaNaranja text-2xl"></i>
+              </div>
+              <div>
+                <div class="font-body font-bold text-tierraMarron text-lg">Base de Operaciones</div>
+                <div class="font-body text-tierraMarron/70 text-lg">Ruta 8, KM 95, Sierra de la Ventana, Buenos Aires</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="fade-up">
+          <form class="bg-white rounded-3xl p-8 lg:p-10 shadow-xl" onsubmit="handleSubmit(event)">
+            <h3 class="font-heading text-tierraMarron text-2xl mb-6">FORMULARIO DE INSCRIPCION</h3>
+            <div class="mb-6">
+              <label class="font-body font-bold text-tierraMarron text-lg block mb-2">Nombre Completo</label>
+              <div class="relative">
+                <i class="ti ti-user absolute left-4 top-1/2 -translate-y-1/2 text-tierraMarron/40 text-xl"></i>
+                <input type="text" placeholder="Ej: Juan Perez" class="w-full pl-12 pr-4 py-4 bg-camel/20 border-2 border-camel/30 rounded-xl font-body text-tierraMarron text-lg focus:border-alertaNaranja focus:outline-none focus:ring-2 focus:ring-alertaNaranja/30 transition-all duration-200 placeholder:text-tierraMarron/40">
+              </div>
+            </div>
+            <div class="mb-6">
+              <label class="font-body font-bold text-tierraMarron text-lg block mb-2">Correo Electronico</label>
+              <div class="relative">
+                <i class="ti ti-mail absolute left-4 top-1/2 -translate-y-1/2 text-tierraMarron/40 text-xl"></i>
+                <input type="email" placeholder="Ej: juan@email.com" class="w-full pl-12 pr-4 py-4 bg-camel/20 border-2 border-camel/30 rounded-xl font-body text-tierraMarron text-lg focus:border-alertaNaranja focus:outline-none focus:ring-2 focus:ring-alertaNaranja/30 transition-all duration-200 placeholder:text-tierraMarron/40">
+              </div>
+            </div>
+            <div class="mb-6">
+              <label class="font-body font-bold text-tierraMarron text-lg block mb-2">Modelo de Vehiculo</label>
+              <div class="relative">
+                <i class="ti ti-car absolute left-4 top-1/2 -translate-y-1/2 text-tierraMarron/40 text-xl"></i>
+                <input type="text" placeholder="Ej: Toyota Hilux 4x4" class="w-full pl-12 pr-4 py-4 bg-camel/20 border-2 border-camel/30 rounded-xl font-body text-tierraMarron text-lg focus:border-alertaNaranja focus:outline-none focus:ring-2 focus:ring-alertaNaranja/30 transition-all duration-200 placeholder:text-tierraMarron/40">
+              </div>
+            </div>
+            <div class="mb-8">
+              <label class="font-body font-bold text-tierraMarron text-lg block mb-2">Nivel de Experiencia</label>
+              <div class="relative">
+                <i class="ti ti-trending-up absolute left-4 top-1/2 -translate-y-1/2 text-tierraMarron/40 text-xl"></i>
+                <select class="w-full pl-12 pr-4 py-4 bg-camel/20 border-2 border-camel/30 rounded-xl font-body text-tierraMarron text-lg focus:border-alertaNaranja focus:outline-none focus:ring-2 focus:ring-alertaNaranja/30 transition-all duration-200 appearance-none cursor-pointer">
+                  <option value="" class="text-tierraMarron">Selecciona tu nivel</option>
+                  <option value="principiante" class="text-tierraMarron">Principiante - Primera vez en off-road</option>
+                  <option value="intermedio" class="text-tierraMarron">Intermedio - Experiencia basica</option>
+                  <option value="avanzado" class="text-tierraMarron">Avanzado - Manejo regular en campo</option>
+                  <option value="experto" class="text-tierraMarron">Experto - Conductor certificado</option>
+                </select>
+                <i class="ti ti-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-tierraMarron/40 text-xl pointer-events-none"></i>
+              </div>
+            </div>
+            <button type="submit" class="w-full btn-pulse bg-alertaNaranja text-white font-body font-bold text-xl px-8 py-4 rounded-xl hover:bg-tierraMarron transition-colors duration-300 flex items-center justify-center gap-3">
+              <i class="ti ti-send text-2xl"></i>
+              Enviar Inscripcion
+            </button>
+            <p id="formMsg" class="font-body text-lg mt-4 text-center text-aventuraVerde font-semibold hidden">
+              <i class="ti ti-check-circle text-xl"></i> Inscripcion enviada correctamente. Te contactaremos pronto.
+            </p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      var msg = document.getElementById('formMsg');
+      msg.classList.remove('hidden');
+      e.target.reset();
+      setTimeout(function() { msg.classList.add('hidden'); }, 5000);
+    }
+  </script>
+
+  <!-- 7. FOOTER -->
+  <footer class="bg-tierraMarron pt-16 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-4 gap-12 mb-12">
+        <div class="md:col-span-1">
+          <a href="#" class="flex items-center gap-3 mb-6 group">
+            <svg width="40" height="40" viewBox="0 0 64 64" fill="none" class="transition-transform duration-300 group-hover:scale-110">
+              <circle cx="32" cy="32" r="30" stroke="#D4B996" stroke-width="2" fill="none"/>
+              <path d="M20 44 L32 18 L44 44" stroke="#E65F2B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M24 38 L32 24 L40 38" stroke="#D4B996" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="32" cy="18" r="3" fill="#E65F2B"/>
+              <line x1="26" y1="44" x2="38" y2="44" stroke="#D4B996" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <span class="font-heading text-camel text-lg block leading-tight">AVENTURA</span>
+              <span class="font-adventure text-alertaNaranja text-base">OFF-ROAD 4x4</span>
+            </div>
+          </a>
+          <p class="font-body text-white/60 text-lg leading-relaxed">
+            Entrenamiento off-road profesional. Expande tus limites con respeto por la naturaleza.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-heading text-camel text-xl mb-6">NAVEGACION</h4>
+          <ul class="space-y-3">
+            <li><a href="#hero" class="font-body text-white/70 text-lg hover:text-alertaNaranja transition-colors duration-200 flex items-center gap-2"><i class="ti ti-chevron-right"></i> Inicio</a></li>
+            <li><a href="#nosotros" class="font-body text-white/70 text-lg hover:text-alertaNaranja transition-colors duration-200 flex items-center gap-2"><i class="ti ti-chevron-right"></i> Nosotros</a></li>
+            <li><a href="#expedicion" class="font-body text-white/70 text-lg hover:text-alertaNaranja transition-colors duration-200 flex items-center gap-2"><i class="ti ti-chevron-right"></i> Expedicion</a></li>
+            <li><a href="#testimonios" class="font-body text-white/70 text-lg hover:text-alertaNaranja transition-colors duration-200 flex items-center gap-2"><i class="ti ti-chevron-right"></i> Testimonios</a></li>
+            <li><a href="#contacto" class="font-body text-white/70 text-lg hover:text-alertaNaranja transition-colors duration-200 flex items-center gap-2"><i class="ti ti-chevron-right"></i> Inscripcion</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading text-camel text-xl mb-6">SERVICIOS</h4>
+          <ul class="space-y-3">
+            <li class="font-body text-white/70 text-lg flex items-center gap-2"><i class="ti ti-satellite text-alertaNaranja"></i> Navegacion Satelital</li>
+            <li class="font-body text-white/70 text-lg flex items-center gap-2"><i class="ti ti-tool text-alertaNaranja"></i> Rescate y Winchado</li>
+            <li class="font-body text-white/70 text-lg flex items-center gap-2"><i class="ti ti-engine text-alertaNaranja"></i> Mecanica de Emergencia</li>
+            <li class="font-body text-white/70 text-lg flex items-center gap-2"><i class="ti ti-wave-water text-alertaNaranja"></i> Vadeo Extremo</li>
+            <li class="font-body text-white/70 text-lg flex items-center gap-2"><i class="ti ti-tent text-alertaNaranja"></i> Expedicion Final</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading text-camel text-xl mb-6">REDES SOCIALES</h4>
+          <div class="flex gap-4">
+            <a href="#" class="w-12 h-12 bg-camel/10 rounded-xl flex items-center justify-center hover:bg-alertaNaranja transition-colors duration-200 group">
+              <i class="ti ti-brand-instagram text-camel group-hover:text-white text-xl"></i>
+            </a>
+            <a href="#" class="w-12 h-12 bg-camel/10 rounded-xl flex items-center justify-center hover:bg-alertaNaranja transition-colors duration-200 group">
+              <i class="ti ti-brand-facebook text-camel group-hover:text-white text-xl"></i>
+            </a>
+            <a href="#" class="w-12 h-12 bg-camel/10 rounded-xl flex items-center justify-center hover:bg-alertaNaranja transition-colors duration-200 group">
+              <i class="ti ti-brand-youtube text-camel group-hover:text-white text-xl"></i>
+            </a>
+            <a href="#" class="w-12 h-12 bg-camel/10 rounded-xl flex items-center justify-center hover:bg-alertaNaranja transition-colors duration-200 group">
+              <i class="ti ti-brand-whatsapp text-camel group-hover:text-white text-xl"></i>
+            </a>
+          </div>
+          <p class="font-body text-white/50 text-lg mt-6">
+            Seguinos para ver fotos y videos de nuestras expediciones.
+          </p>
+        </div>
+      </div>
+      <div class="border-t border-camel/20 pt-8">
+        <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+          <p class="font-body text-white/50 text-lg">&copy; 2026 Aventura Off-Road 4x4. Todos los derechos reservados.</p>
+          <div class="flex items-center gap-6">
+            <a href="#" class="font-body text-white/50 text-lg hover:text-alertaNaranja transition-colors">Politica de Privacidad</a>
+            <a href="#" class="font-body text-white/50 text-lg hover:text-alertaNaranja transition-colors">Terminos y Condiciones</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    var targetDate = new Date('2026-11-10T00:00:00-03:00').getTime();
+
+    function updateCountdown() {
+      var now = new Date().getTime();
+      var diff = targetDate - now;
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        return;
+      }
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+      var daysEl = document.getElementById('days');
+      var hoursEl = document.getElementById('hours');
+      var minutesEl = document.getElementById('minutes');
+      var secondsEl = document.getElementById('seconds');
+      if (daysEl.textContent !== String(days).padStart(2, '0')) {
+        daysEl.textContent = String(days).padStart(2, '0');
+        daysEl.classList.remove('count-animate');
+        void daysEl.offsetWidth;
+        daysEl.classList.add('count-animate');
+      }
+      if (hoursEl.textContent !== String(hours).padStart(2, '0')) {
+        hoursEl.textContent = String(hours).padStart(2, '0');
+        hoursEl.classList.remove('count-animate');
+        void hoursEl.offsetWidth;
+        hoursEl.classList.add('count-animate');
+      }
+      if (minutesEl.textContent !== String(minutes).padStart(2, '0')) {
+        minutesEl.textContent = String(minutes).padStart(2, '0');
+        minutesEl.classList.remove('count-animate');
+        void minutesEl.offsetWidth;
+        minutesEl.classList.add('count-animate');
+      }
+      secondsEl.textContent = String(seconds).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    var trailPath = document.getElementById('trailPath');
+    var trailSvg = document.getElementById('trailSvg');
+    var trailAnimated = false;
+
+    function animateTrail() {
+      if (trailAnimated) return;
+      var rect = trailSvg.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) {
+        trailPath.classList.add('animate');
+        trailAnimated = true;
+      }
+    }
+
+    window.addEventListener('scroll', animateTrail);
+    animateTrail();
+
+    var dayData = {
+      1: { title: 'DIA 1: NAVEGACION SATELITAL', desc: 'Aprende a trazar rutas con GPS off-road, leer mapas topograficos y usar brujula. Desarrolla la capacidad de orientarte en territorio sin caminos marcados, utilizando herramientas de navegacion terrestre y satelital.', icon: 'ti-compass' },
+      2: { title: 'DIA 2: RESCATE Y WINCHADO', desc: 'Dominas tecnicas de winchado con cable de acero y sintetico. Practicas puntos de anclaje, angulos de traccion y rescate de vehiculos atascados en barro, arena y pendientes pronunciadas.', icon: 'ti-anchor' },
+      3: { title: 'DIA 3: MECANICA DE EMERGENCIA', desc: 'Identificas y resuelves fallas mecanicas en campo: pinchaduras, problemas de transmision, suspension y motor. Aprende a realizar reparaciones temporales que te permitan volver al camino.', icon: 'ti-wrench' },
+      4: { title: 'DIA 4: VADEO EXTREMO', desc: 'Cruza rios y cauces secos con tecnicas avanzadas de vadeo. Evalua profundidad, corriente y fondo del terreno subacuatico. Controla la traccion en superficies completamente inundadas.', icon: 'ti-wave-water' },
+      5: { title: 'DIA 5: EXPEDICION FINAL', desc: 'Aplica todo lo aprendido en una expedicion real de 8 horas por senderos montanosos. Navegacion, rescate, mecanica y vadeo se combinan en un desafio integral que certifica tu nivel profesional.', icon: 'ti-flag' }
+    };
+
+    function selectDay(num) {
+      var detail = document.getElementById('dayDetail');
+      var data = dayData[num];
+      document.getElementById('dayTitle').textContent = data.title;
+      document.getElementById('dayDesc').textContent = data.desc;
+      document.getElementById('dayIcon').innerHTML = '<i class="ti ' + data.icon + ' text-3xl"></i>';
+      detail.classList.remove('hidden');
+      detail.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    var fadeElements = document.querySelectorAll('.fade-up');
+    function handleScrollFade() {
+      for (var i = 0; i < fadeElements.length; i++) {
+        var rect = fadeElements[i].getBoundingClientRect();
+        if (rect.top < window.innerHeight * 0.85) {
+          fadeElements[i].classList.add('visible');
+        }
+      }
+    }
+    window.addEventListener('scroll', handleScrollFade);
+    handleScrollFade();
+  </script>
+</body>
+</html>
